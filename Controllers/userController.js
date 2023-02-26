@@ -11,7 +11,6 @@ const User = require("../Models/userModel");
 // Create new User
 const createUser = asyncHandler(async (req, res) => {
   const { firstName, lastName, mobileNumber, email, password } = req.body;
-  const file = req.files.profile;
 
   try {
     if (
@@ -20,7 +19,7 @@ const createUser = asyncHandler(async (req, res) => {
       !mobileNumber ||
       !email ||
       !password ||
-      !file
+      !req.files
     ) {
       res.status(400).send("please fill all required fields");
     }
@@ -32,6 +31,7 @@ const createUser = asyncHandler(async (req, res) => {
       res.status(400).send("This email address is already being used");
     }
 
+    const file = req.files.profile;
     const dataUri = `data:${file.mimetype};base64,${file.data.toString(
       "base64"
     )}`;
@@ -130,7 +130,6 @@ const deleteUser = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
   const userId = await req.user.id;
   const app = await req.body;
-  const file = req.files.profile;
 
   if (!isValidObjectId(userId))
     return res.status(400).send(`No Record with given id : ${userId}`);
@@ -141,7 +140,8 @@ const updateUser = asyncHandler(async (req, res) => {
     app["password"] = hashedPassword;
   }
 
-  if (file) {
+  if (req.files) {
+    const file = req.files.profile;
     const dataUri = `data:${file.mimetype};base64,${file.data.toString(
       "base64"
     )}`;
