@@ -128,6 +128,7 @@ const updateUser = asyncHandler(async (req, res) => {
   const userId = await req.user.id;
   const app = await req.body;
   const file = req.files.profile;
+  console.log(app);
 
   if (!isValidObjectId(userId))
     return res.status(400).send(`No Record with given id : ${userId}`);

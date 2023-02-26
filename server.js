@@ -18,7 +18,11 @@ connection();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
-  fileUpload({ useTempFiles: true, limits: { fileSize: 50 * 2024 * 1024 } })
+  fileUpload({
+    tempFileDir: "/var/task/tmp",
+    useTempFiles: true,
+    limits: { fileSize: 50 * 2024 * 1024 },
+  })
 );
 app.use(cors());
 
