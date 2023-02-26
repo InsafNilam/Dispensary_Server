@@ -1,16 +1,24 @@
 # Dispensary_Server
 Routes:
 1-> https://outrageous-foal-loincloth.cyclic.app/api/user/signup  : POST
+
   profile - image*
+  
   firstName - text*
+  
   lastName - text*
+  
   email - text*
+  
   password - text*
+  
   mobileNumber - text*
   
   
  2-> https://outrageous-foal-loincloth.cyclic.app/api/user/signin : POST
+ 
   email - text*
+  
   password - text*
   
   
