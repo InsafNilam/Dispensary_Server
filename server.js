@@ -15,12 +15,11 @@ const userRouter = require("./Routes/userRoutes");
 connection();
 
 // middlewares
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   fileUpload({
-    tempFileDir: "/var/task/tmp",
-    useTempFiles: true,
+    useTempFiles: false,
     limits: { fileSize: 50 * 2024 * 1024 },
   })
 );

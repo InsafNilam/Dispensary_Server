@@ -32,7 +32,10 @@ const createUser = asyncHandler(async (req, res) => {
       res.status(400).send("This email address is already being used");
     }
 
-    const result = await cloudinary.uploader.upload(file.tempFilePath, {
+    const dataUri = `data:${file.mimetype};base64,${file.data.toString(
+      "base64"
+    )}`;
+    const result = await cloudinary.uploader.upload(dataUri, {
       public_id: crypto.randomBytes(16, (err, buf) => {
         if (err) {
           return reject(err);
@@ -128,7 +131,6 @@ const updateUser = asyncHandler(async (req, res) => {
   const userId = await req.user.id;
   const app = await req.body;
   const file = req.files.profile;
-  console.log(app);
 
   if (!isValidObjectId(userId))
     return res.status(400).send(`No Record with given id : ${userId}`);
@@ -140,13 +142,16 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   if (file) {
+    const dataUri = `data:${file.mimetype};base64,${file.data.toString(
+      "base64"
+    )}`;
     try {
       const user = await User.findById(userId);
       if (user) {
         const id = user.profile.id;
         await cloudinary.uploader.destroy(id);
 
-        const result = await cloudinary.uploader.upload(file.tempFilePath, {
+        const result = await cloudinary.uploader.upload(dataUri, {
           public_id: crypto.randomBytes(16, (err, buf) => {
             if (err) {
               return reject(err);
@@ -161,8 +166,6 @@ const updateUser = asyncHandler(async (req, res) => {
             }
           }),
           resource_type: "image",
-          overwrite: true,
-          invalidate: true,
           folder: "profiles",
         });
 
